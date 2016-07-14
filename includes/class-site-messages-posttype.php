@@ -71,7 +71,7 @@ class Site_Messages_Posttype {
 			'label'                 => __( 'Site Message', 'ez-site-messages' ),
 			'description'           => __( 'Alerts and Other Messages', 'ez-site-messages' ),
 			'labels'                => $labels,
-			'supports'              => array( 'editor', 'revisions', ),
+			'supports'              => array( 'title', 'editor', 'revisions', ),
 			'taxonomies'            => array(  ),
 			'hierarchical'          => false,
 			'public'                => true,

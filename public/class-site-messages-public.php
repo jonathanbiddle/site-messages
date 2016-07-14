@@ -112,7 +112,7 @@ class Site_Messages_Public {
 			'site-messages'
 		);
 
-		$fetch_alerts = ($atts['display'] == 'alerts') False : True;
+		$fetch_alerts = ($atts['display'] == 'alerts')? True : False;
 
 		$messages = $this->_get_messages( $fetch_alerts );
 
@@ -120,7 +120,7 @@ class Site_Messages_Public {
 	}
 
 	// Query for the messages
-	private _get_messages( $fetch_alerts = False ) {
+	private function _get_messages( $fetch_alerts = False ) {
 		$compare = '!=';
 
 		if ($fetch_alerts) {
@@ -129,9 +129,9 @@ class Site_Messages_Public {
 
 		// WP_Query arguments
 		$args = array (
-			'post_type'              => array( 'ez_site_message' ),
-			'post_status'            => array( 'publish' ),
-			'meta_query'             => array(
+			'post_type'         => array( 'ez_site_message' ),
+			'post_status'       => array( 'publish' ),
+			'meta_query'        => array(
 				array(
 					'key'       => 'is_alert',
 					'value'     => '1',
@@ -146,11 +146,11 @@ class Site_Messages_Public {
 	}
 
 	// Render the HTML
-	private _render( $messages ) {
+	private function _render( $messages ) {
 		ob_start();
 
 		foreach ($messages as $message) {
-			include('partials/site-message-public-display.php');
+			include( plugin_dir_path( __FILE__ ) . 'partials/site-messages-public-display.php' );
 		}
 
 		return ob_get_clean();
