@@ -68,6 +68,8 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-site-messages.php';
  */
 function run_site_messages() {
 
+	//ini_set("date.timezone", "America/New_York");
+
 	$plugin = new Site_Messages();
 	$plugin->run();
 

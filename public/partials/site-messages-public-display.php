@@ -13,6 +13,5 @@
  */
 ?>
 <div class="site-message">
-	<pre><?php var_dump($message); ?></pre>
-	<pre><?php var_dump( get_post_meta( $message->ID ) ); ?></pre>
+	<?php echo $message->post_content; ?>
 </div>

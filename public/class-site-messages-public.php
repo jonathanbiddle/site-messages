@@ -105,40 +105,36 @@ class Site_Messages_Public {
 		// Attributes
 		$atts = shortcode_atts(
 			array(
-				'display' => 'messages',
+				'categories' => null,
 				'limit' => 5,
 			),
 			$atts,
 			'site-messages'
 		);
 
-		$fetch_alerts = ($atts['display'] == 'alerts')? True : False;
+		$messages = $this->_get_messages( $atts['categories'] );
 
-		$messages = $this->_get_messages( $fetch_alerts );
-
-		echo $this->_render( $messages );
+		return $this->_render( $messages );
 	}
 
 	// Query for the messages
-	private function _get_messages( $fetch_alerts = False ) {
-		$compare = '!=';
-
-		if ($fetch_alerts) {
-			$compare = '=';
-		}
+	private function _get_messages( $categories = null ) {
 
 		// WP_Query arguments
 		$args = array (
-			'post_type'         => array( 'ez_site_message' ),
-			'post_status'       => array( 'publish' ),
-			'meta_query'        => array(
-				array(
-					'key'       => 'is_alert',
-					'value'     => '1',
-					'compare'   => $compare,
-				),
-			),
+			'post_type' => array( 'ez_site_message' ),
+			'post_status' => array( 'publish' ),
 		);
+
+		if ( is_string( $categories ) ) {
+			$args['tax_query'] = array(
+				array(
+					'taxonomy' => 'ez_message_category',
+					'field' => 'slug',
+					'terms' => $categories,
+				),
+			);
+		}
 
 		// The Query
 		$query = new WP_Query( $args );
@@ -150,7 +146,21 @@ class Site_Messages_Public {
 		ob_start();
 
 		foreach ($messages as $message) {
-			include( plugin_dir_path( __FILE__ ) . 'partials/site-messages-public-display.php' );
+			$scheduled = get_post_meta($message->ID, 'activate_scheduler', true);
+
+			if($scheduled) {
+				$start = new Datetime( get_post_meta($message->ID, 'start_datetime', true) );
+				$stop = new Datetime( get_post_meta($message->ID, 'stop_datetime', true) );
+				$now = new Datetime( 'now' );
+
+				if( $start <= $now and $now <= $stop) {
+					// within the time restrictions
+					include( plugin_dir_path( __FILE__ ) . 'partials/site-messages-public-display.php' );
+				}
+			} else {
+				// no time restrictions
+				include( plugin_dir_path( __FILE__ ) . 'partials/site-messages-public-display.php' );
+			}
 		}
 
 		return ob_get_clean();
