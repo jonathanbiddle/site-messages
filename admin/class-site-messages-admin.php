@@ -99,16 +99,4 @@ class Site_Messages_Admin {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/site-messages-admin.js', array( 'jquery' ), $this->version, false );
 
 	}
-
-	public function add_capabilities() {
-		$role = get_role( 'administrator' );
-		$role->add_cap( 'edit_site_message' );
-		$role->add_cap( 'read_site_message' );
-		$role->add_cap( 'delete_site_message' );
-		$role->add_cap( 'edit_site_messages' );
-		$role->add_cap( 'edit_others_site_messages' );
-		$role->add_cap( 'publish_site_message' );
-		$role->add_cap( 'read_private_site_message' );
-	}
-
 }

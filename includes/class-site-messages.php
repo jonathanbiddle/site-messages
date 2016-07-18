@@ -159,6 +159,7 @@ class Site_Messages {
 		$plugin_posttype = new Site_Messages_Posttype( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'init', $plugin_posttype, 'register_post_type', 10 );
+		$this->loader->add_action( 'init', $plugin_posttype, 'register_taxonomy', 10 );
 		$this->loader->add_action( 'init', $plugin_posttype, 'acf_field_group_setup', 20 );
 
 	}
@@ -176,7 +177,6 @@ class Site_Messages {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-		$this->loader->add_action( 'admin_init', $plugin_admin, 'add_capabilities' );
 
 	}
 

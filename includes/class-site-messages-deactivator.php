@@ -30,7 +30,28 @@ class Site_Messages_Deactivator {
 	 * @since    1.0.0
 	 */
 	public static function deactivate() {
-
+		Site_Messages_Deactivator::remove_capabilities();
 	}
 
+	public static function remove_capabilities() {
+		$role = get_role( 'administrator' );
+		$role->remove_cap( 'edit_site_message' );
+		$role->remove_cap( 'read_site_message' );
+		$role->remove_cap( 'delete_site_message' );
+		$role->remove_cap( 'edit_site_messages' );
+		$role->remove_cap( 'edit_others_site_messages' );
+		$role->remove_cap( 'publish_site_message' );
+		$role->remove_cap( 'read_private_site_message' );
+		$role->remove_cap( 'manage_message_categories' );
+
+		$role = get_role( 'editor' );
+		$role->remove_cap( 'edit_site_message' );
+		$role->remove_cap( 'read_site_message' );
+		$role->remove_cap( 'delete_site_message' );
+		$role->remove_cap( 'edit_site_messages' );
+		$role->remove_cap( 'edit_others_site_messages' );
+		$role->remove_cap( 'publish_site_message' );
+		$role->remove_cap( 'read_private_site_message' );
+		$role->remove_cap( 'manage_message_categories' );
+	}
 }
